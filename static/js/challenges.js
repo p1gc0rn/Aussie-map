@@ -46,6 +46,7 @@ function updateChalWindow(obj) {
         challenge_data["script_root"] = script_root;
 
         $("#challenge-window").append(template.render(challenge_data));
+
         $(".challenge-solves").click(function(e) {
           getsolves($("#challenge-id").val());
         });
@@ -271,12 +272,12 @@ function loadchals(cb) {
   $.get(script_root + "/api/v1/challenges", function(response) {
     var categories = [];
     challenges = response.data;
-    $("#challenges-board-web").empty();
+
+    $("#challenges-board").empty();
 
     for (var i = challenges.length - 1; i >= 0; i--) {
-      	challenges[i].solves = 0;
-	
-	if ($.inArray(challenges[i].category, categories) == -1) {
+      challenges[i].solves = 0;
+      if ($.inArray(challenges[i].category, categories) == -1) {
         var category = challenges[i].category;
         categories.push(category);
 
@@ -286,16 +287,16 @@ function loadchals(cb) {
             '<div id="{0}-row" class="pt-5">'.format(categoryid) +
             '<div class="category-header col-md-12 mb-3">' +
             "</div>" +
-            '<div class="category-challenges">' +
-            '<div class="challenges-row"></div>' +
+            '<div class="category-challenges col-md-12">' +
+            '<div class="challenges-row col-md-12"></div>' +
             "</div>" +
             "</div>"
         );
         categoryrow
           .find(".category-header")
-          .append($("<h2>" + category + "</h2>"));
-        $("#challenges-board-"+category).append(categoryrow);
-	console.log(categoryrow);
+          .append($("<h3>" + category + "</h3>"));
+
+        $("#challenges-board").append(categoryrow);
       }
     }
 
@@ -305,11 +306,12 @@ function loadchals(cb) {
       var chalid = chalinfo.name.replace(/ /g, "-").hashCode();
       var catid = chalinfo.category.replace(/ /g, "-").hashCode();
       var chalwrap = $(
-        "<div id='{0}' class='col-md-4 d-inline-block'></div>".format(chalid)
+        "<div id='{0}' class='col-md-3 d-inline-block'></div>".format(chalid)
       );
+
       if (user_solves.indexOf(chalinfo.id) == -1) {
         var chalbutton = $(
-          "<button class='btn btn-dark challenge-button w-100' value='{0}'></button>".format(
+          "<button class='btn btn-dark challenge-button w-100 text-truncate pt-3 pb-3 mb-2' value='{0}'></button>".format(
             chalinfo.id
           )
         );
@@ -326,17 +328,15 @@ function loadchals(cb) {
       for (var j = 0; j < chalinfo.tags.length; j++) {
         var tag = "tag-" + chalinfo.tags[j].value.replace(/ /g, "-");
         chalwrap.addClass(tag);
-	console.log(tag);
       }
 
       chalbutton.append(chalheader);
       chalbutton.append(chalscore);
       chalwrap.append(chalbutton);
-      console.log(catid);
-	$("#" + catid + "-row")
+
+      $("#" + catid + "-row")
         .find(".category-challenges > .challenges-row")
         .append(chalwrap);
-      console.log(chalwrap);
     }
 
     $(".challenge-button").click(function(e) {

@@ -276,7 +276,7 @@ function loadchals(cb) {
 
     for (var i = challenges.length - 1; i >= 0; i--) {
       challenges[i].solves = 0;
-      $("#challenges-board"+challenges[i].category).empty();
+      $("#challenges-board-"+challenges[i].category).empty();
 	if ($.inArray(challenges[i].category, categories) == -1) {
         var category = challenges[i].category;
         categories.push(category);
@@ -295,7 +295,7 @@ function loadchals(cb) {
         categoryrow
           .find(".category-header")
           .append($("<h3>" + category + "</h3>"));
-	console.log($("#challenges-board-"+category);
+	console.log($("#challenges-board-"+category));
         $("#challenges-board-"+category).append(categoryrow);
       }
     }

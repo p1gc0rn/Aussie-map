@@ -39,7 +39,7 @@ function updateChalWindow(obj) {
         var template = nunjucks.compile(template_data);
         window.challenge.data = challenge_data;
         window.challenge.preRender();
-
+	console.log(challenge_data);
         challenge_data["description"] = window.challenge.render(
           challenge_data["description"]
         );
@@ -70,9 +70,10 @@ function updateChalWindow(obj) {
           $("#submit-key").prop("disabled", true);
           window.challenge.submit(function(data) {
             renderSubmissionResponse(data);
-            loadchals(function() {
+	    /*loadchals(function() {
               marksolves();
-            });
+            });*/
+            marksolves();
           });
         });
 
@@ -119,7 +120,7 @@ $("#submission-input").keyup(function(event) {
 
 function renderSubmissionResponse(response, cb) {
   var result = response.data;
-
+  console.log(result);
   var result_message = $("#result-message");
   var result_notification = $("#result-notification");
   var answer_input = $("#submission-input");
@@ -208,6 +209,7 @@ function marksolves(cb) {
     response
   ) {
     var solves = response.data;
+    console.log(solves);
     for (var i = solves.length - 1; i >= 0; i--) {
       var id = solves[i].challenge_id;
       var btn = $('button[value="' + id + '"]');
@@ -271,8 +273,7 @@ function loadchals(cb) {
   $.get(script_root + "/api/v1/challenges", function(response) {
     var categories = [];
     challenges = response.data;
-    $("#challenges-board-web").empty();
-
+    console.log(challenges);
     for (var i = challenges.length - 1; i >= 0; i--) {
       	challenges[i].solves = 0;
 	
@@ -295,7 +296,6 @@ function loadchals(cb) {
           .find(".category-header")
           .append($("<h2>" + category + "</h2>"));
         $("#challenges-board-"+category).append(categoryrow);
-	console.log(categoryrow);
       }
     }
 
@@ -309,7 +309,7 @@ function loadchals(cb) {
       );
       if (user_solves.indexOf(chalinfo.id) == -1) {
         var chalbutton = $(
-          "<button class='btn btn-dark challenge-button w-100' value='{0}'></button>".format(
+          "<button class='btn btn-dark challenge-button w-100 text-truncate pt-3 pb-3 mb-2' value='{0}'></button>".format(
             chalinfo.id
           )
         );
@@ -326,17 +326,14 @@ function loadchals(cb) {
       for (var j = 0; j < chalinfo.tags.length; j++) {
         var tag = "tag-" + chalinfo.tags[j].value.replace(/ /g, "-");
         chalwrap.addClass(tag);
-	console.log(tag);
       }
 
       chalbutton.append(chalheader);
       chalbutton.append(chalscore);
       chalwrap.append(chalbutton);
-      console.log(catid);
 	$("#" + catid + "-row")
         .find(".category-challenges > .challenges-row")
         .append(chalwrap);
-      console.log(chalwrap);
     }
 
     $(".challenge-button").click(function(e) {
@@ -356,6 +353,7 @@ $("#submit-key").click(function(e) {
     $("#submission-input").val(),
     $("#nonce").val()
   );
+  
 });
 
 $(".challenge-solves").click(function(e) {

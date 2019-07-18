@@ -7,18 +7,18 @@
                 width: 1000px;
             }
             #paper {
-                height: 650px; 
+                height: 800px; 
                 position: absolute;
-		left:40%;
+		left:50%;
                 top: 30%;
-                width: 650px;
+                width:800px;
             }
             #nsw, #vic, #wa, #sa, #nt, #qld, #tas {
                 display: none;
                 height: 500px;
       		overflow:auto; 
 		position:absolute;
-                left: 90%;
+                left: 110%;
 		top: 25%;
                 width: 600px;
             } 
